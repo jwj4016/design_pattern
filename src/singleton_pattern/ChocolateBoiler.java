@@ -3,10 +3,19 @@ package singleton_pattern;
 public class ChocolateBoiler {
     private boolean empty;
     private boolean boiled;
+    //ChocolateBoiler 클래스의 하나뿐인 인스턴스 저장하는 정적 변수.
+    private static ChocolateBoiler uniqueInstance;
 
     private ChocolateBoiler() {
         empty = true;
         boiled = false;
+    }
+
+    public static ChocolateBoiler getInstance() {
+        if (uniqueInstance == null) {
+            uniqueInstance = new ChocolateBoiler();
+        }
+        return uniqueInstance;
     }
 
     //보일러에 우유와 초콜릿을 넣는다.
