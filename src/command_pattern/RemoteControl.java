@@ -6,6 +6,7 @@ import command_pattern.command.NoCommand;
 public class RemoteControl {
     Command[] onCommands;
     Command[] offCommands;
+    Command undoCommand;        //undo 버튼을 눌렀을 때를 대비해 마지막으로 사용한 커맨드 객체를 넣는 변수.
 
     public RemoteControl() {
         onCommands = new Command[7];
@@ -16,6 +17,7 @@ public class RemoteControl {
             onCommands[i] = noCommand;
             offCommands[i] = noCommand;
         }
+        undoCommand = noCommand;
     }
 
     public void setCommand(int slot, Command onCommand, Command offCommand) {
@@ -25,10 +27,16 @@ public class RemoteControl {
 
     public void onButtonWasPushed(int slot) {
         onCommands[slot].execute();
+        undoCommand = onCommands[slot];
     }
 
     public void offButtonWasPushed(int slot) {
         offCommands[slot].execute();
+        undoCommand = offCommands[slot];
+    }
+
+    public void undoButtonWasPushed() {
+        undoCommand.undo();
     }
 
     public String toString() {
@@ -44,6 +52,7 @@ public class RemoteControl {
                     .append(offCommands[i].getClass().getName())
                     .append("\n");
         }
+        stringBuilder.append(undoCommand.getClass().getName());
         return stringBuilder.toString();
     }
 }
